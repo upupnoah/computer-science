@@ -1,0 +1,44 @@
+	.file	"subexpr.c"
+	.text
+	.globl	sum_neighbors
+	.type	sum_neighbors, @function
+sum_neighbors:
+.LFB0:
+	.cfi_startproc
+	subq	$1, %rsi
+	imulq	%rcx, %rsi
+	leaq	(%rsi,%rcx,2), %rax
+	movq	%rax, %r8
+	subq	%rcx, %r8
+	movq	%r8, %rcx
+	addq	%rdx, %rcx
+	addq	%rdx, %rsi
+	addq	%rax, %rdx
+	movq	(%rdi,%rsi,8), %rax
+	addq	(%rdi,%rdx,8), %rax
+	addq	-8(%rdi,%rcx,8), %rax
+	addq	8(%rdi,%rcx,8), %rax
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	sum_neighbors, .-sum_neighbors
+	.globl	sum_neighbors_opt
+	.type	sum_neighbors_opt, @function
+sum_neighbors_opt:
+.LFB1:
+	.cfi_startproc
+	imulq	%rcx, %rsi
+	addq	%rsi, %rdx
+	movq	%rdx, %rax
+	subq	%rcx, %rax
+	addq	%rdx, %rcx
+	movq	(%rdi,%rax,8), %rax
+	addq	(%rdi,%rcx,8), %rax
+	addq	-8(%rdi,%rdx,8), %rax
+	addq	8(%rdi,%rdx,8), %rax
+	ret
+	.cfi_endproc
+.LFE1:
+	.size	sum_neighbors_opt, .-sum_neighbors_opt
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

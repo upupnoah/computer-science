@@ -1,0 +1,80 @@
+	.file	"control.c"
+	.text
+	.globl	gt
+	.type	gt, @function
+gt:
+.LFB0:
+	.cfi_startproc
+	cmpq	%rsi, %rdi
+	setg	%al
+	movzbl	%al, %eax
+	ret
+	.cfi_endproc
+.LFE0:
+	.size	gt, .-gt
+	.globl	zero
+	.type	zero, @function
+zero:
+.LFB1:
+	.cfi_startproc
+	testq	%rdi, %rdi
+	sete	%al
+	movzbl	%al, %eax
+	ret
+	.cfi_endproc
+.LFE1:
+	.size	zero, .-zero
+	.globl	absdiff
+	.type	absdiff, @function
+absdiff:
+.LFB2:
+	.cfi_startproc
+	cmpq	%rsi, %rdi
+	jle	.L4
+	movq	%rdi, %rax
+	subq	%rsi, %rax
+	ret
+.L4:
+	movq	%rsi, %rax
+	subq	%rdi, %rax
+	ret
+	.cfi_endproc
+.LFE2:
+	.size	absdiff, .-absdiff
+	.globl	absdiff_j
+	.type	absdiff_j, @function
+absdiff_j:
+.LFB3:
+	.cfi_startproc
+	cmpq	%rsi, %rdi
+	jle	.L7
+	movq	%rdi, %rax
+	subq	%rsi, %rax
+	ret
+.L7:
+	movq	%rsi, %rax
+	subq	%rdi, %rax
+.L8:
+	ret
+	.cfi_endproc
+.LFE3:
+	.size	absdiff_j, .-absdiff_j
+	.globl	absdiff_cm
+	.type	absdiff_cm, @function
+absdiff_cm:
+.LFB4:
+	.cfi_startproc
+	movq	%rdi, %rax
+	subq	%rsi, %rax
+	movq	%rsi, %rdx
+	subq	%rdi, %rdx
+	cmpq	%rsi, %rdi
+	jg	.L10
+	movq	%rdx, %rax
+.L10:
+	rep; ret
+	.cfi_endproc
+.LFE4:
+	.size	absdiff_cm, .-absdiff_cm
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

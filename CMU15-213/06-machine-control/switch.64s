@@ -1,0 +1,146 @@
+	.file	"switch.c"
+	.text
+	.globl	switch_eg
+	.type	switch_eg, @function
+switch_eg:
+.LFB34:
+	.cfi_startproc
+	movq	%rdx, %rcx
+	cmpq	$6, %rdi
+	ja	.L8
+	jmp	*.L4(,%rdi,8)
+	.section	.rodata
+	.align 8
+	.align 4
+.L4:
+	.quad	.L8
+	.quad	.L3
+	.quad	.L5
+	.quad	.L9
+	.quad	.L8
+	.quad	.L7
+	.quad	.L7
+	.text
+.L3:
+	movq	%rsi, %rax
+	imulq	%rdx, %rax
+	ret
+.L5:
+	movq	%rsi, %rax
+	cqto
+	idivq	%rcx
+	jmp	.L6
+.L9:
+	movl	$1, %eax
+.L6:
+	addq	%rcx, %rax
+	ret
+.L7:
+	movl	$1, %eax
+	subq	%rdx, %rax
+	ret
+.L8:
+	movl	$2, %eax
+	ret
+	.cfi_endproc
+.LFE34:
+	.size	switch_eg, .-switch_eg
+	.globl	sparse_switch_eg
+	.type	sparse_switch_eg, @function
+sparse_switch_eg:
+.LFB35:
+	.cfi_startproc
+	movq	%rdx, %rcx
+	cmpq	$300, %rdi
+	je	.L18
+	cmpq	$300, %rdi
+	jg	.L13
+	cmpq	$100, %rdi
+	je	.L14
+	cmpq	$200, %rdi
+	je	.L15
+	jmp	.L17
+.L13:
+	cmpq	$500, %rdi
+	je	.L16
+	cmpq	$600, %rdi
+	je	.L16
+	jmp	.L17
+.L14:
+	movq	%rsi, %rax
+	imulq	%rdx, %rax
+	ret
+.L15:
+	movq	%rsi, %rax
+	cqto
+	idivq	%rcx
+	jmp	.L12
+.L18:
+	movl	$1, %eax
+.L12:
+	addq	%rcx, %rax
+	ret
+.L16:
+	movl	$1, %eax
+	subq	%rcx, %rax
+	ret
+.L17:
+	movl	$2, %eax
+	ret
+	.cfi_endproc
+.LFE35:
+	.size	sparse_switch_eg, .-sparse_switch_eg
+	.section	.rodata.str1.8,"aMS",@progbits,1
+	.align 8
+.LC0:
+	.string	"x = %ld, y = %ld, z = %ld --> %ld\n"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB36:
+	.cfi_startproc
+	pushq	%r12
+	.cfi_def_cfa_offset 16
+	.cfi_offset 12, -16
+	pushq	%rbp
+	.cfi_def_cfa_offset 24
+	.cfi_offset 6, -24
+	pushq	%rbx
+	.cfi_def_cfa_offset 32
+	.cfi_offset 3, -32
+	movq	%rsi, %rbx
+	movq	8(%rsi), %rdi
+	movl	$10, %edx
+	movl	$0, %esi
+	call	strtol
+	movslq	%eax, %rbp
+	movq	16(%rbx), %rdi
+	movl	$10, %edx
+	movl	$0, %esi
+	call	strtol
+	movslq	%eax, %r12
+	movq	24(%rbx), %rdi
+	movl	$10, %edx
+	movl	$0, %esi
+	call	strtol
+	movslq	%eax, %rbx
+	movq	%rbx, %rdx
+	movq	%r12, %rsi
+	movq	%rbp, %rdi
+	call	switch_eg
+	movq	%rax, %r9
+	movq	%rbx, %r8
+	movq	%r12, %rcx
+	movq	%rbp, %rdx
+	movl	$.LC0, %esi
+	movl	$1, %edi
+	movl	$0, %eax
+	call	__printf_chk
+	movl	$0, %edi
+	call	exit
+	.cfi_endproc
+.LFE36:
+	.size	main, .-main
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

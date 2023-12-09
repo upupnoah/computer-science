@@ -1,0 +1,6 @@
+Sorting 134217728 values
+Rows: Parallel sorting threshold fraction
+Columns: Parallel partitioning threshold fraction
+	1	2	4	8	16	MLim	HLim
+1	13.53	-	-	-	-	3.3825	3.3825
+2	

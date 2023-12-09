@@ -1,0 +1,183 @@
+	.file	"float.c"
+	.text
+	.globl	dadd
+	.type	dadd, @function
+dadd:
+.LFB34:
+	.cfi_startproc
+	addsd	%xmm1, %xmm0
+	ret
+	.cfi_endproc
+.LFE34:
+	.size	dadd, .-dadd
+	.globl	fadd
+	.type	fadd, @function
+fadd:
+.LFB35:
+	.cfi_startproc
+	addss	%xmm1, %xmm0
+	ret
+	.cfi_endproc
+.LFE35:
+	.size	fadd, .-fadd
+	.globl	dincr
+	.type	dincr, @function
+dincr:
+.LFB36:
+	.cfi_startproc
+	movapd	%xmm0, %xmm1
+	movsd	(%rdi), %xmm0
+	addsd	%xmm0, %xmm1
+	movsd	%xmm1, (%rdi)
+	ret
+	.cfi_endproc
+.LFE36:
+	.size	dincr, .-dincr
+	.globl	dvprod
+	.type	dvprod, @function
+dvprod:
+.LFB37:
+	.cfi_startproc
+	xorpd	%xmm0, %xmm0
+	movl	$0, %eax
+	jmp	.L5
+.L6:
+	movsd	(%rdx,%rax,8), %xmm1
+	mulsd	(%rsi,%rax,8), %xmm1
+	addsd	%xmm1, %xmm0
+	addq	$1, %rax
+.L5:
+	cmpq	%rdi, %rax
+	jb	.L6
+	rep; ret
+	.cfi_endproc
+.LFE37:
+	.size	dvprod, .-dvprod
+	.globl	fvprod
+	.type	fvprod, @function
+fvprod:
+.LFB38:
+	.cfi_startproc
+	xorps	%xmm0, %xmm0
+	movl	$0, %eax
+	jmp	.L8
+.L9:
+	movss	(%rdx,%rax,4), %xmm1
+	mulss	(%rsi,%rax,4), %xmm1
+	addss	%xmm1, %xmm0
+	addq	$1, %rax
+.L8:
+	cmpq	%rdi, %rax
+	jb	.L9
+	rep; ret
+	.cfi_endproc
+.LFE38:
+	.size	fvprod, .-fvprod
+	.globl	gt
+	.type	gt, @function
+gt:
+.LFB39:
+	.cfi_startproc
+	ucomiss	%xmm1, %xmm0
+	seta	%al
+	movzbl	%al, %eax
+	ret
+	.cfi_endproc
+.LFE39:
+	.size	gt, .-gt
+	.globl	magnitude
+	.type	magnitude, @function
+magnitude:
+.LFB40:
+	.cfi_startproc
+	movl	$0, %edx
+	movsd	.LC2(%rip), %xmm1
+	xorpd	%xmm2, %xmm2
+	movapd	%xmm2, %xmm4
+	movsd	.LC3(%rip), %xmm3
+	jmp	.L12
+.L13:
+	divsd	%xmm3, %xmm1
+	addq	$1, %rdx
+.L12:
+	ucomisd	%xmm2, %xmm1
+	jp	.L13
+	ucomisd	%xmm4, %xmm1
+	jne	.L13
+	movl	$0, %eax
+	xorpd	%xmm1, %xmm1
+	movapd	%xmm1, %xmm3
+	movsd	.LC3(%rip), %xmm2
+	jmp	.L14
+.L15:
+	divsd	%xmm2, %xmm0
+	addq	$1, %rax
+.L14:
+	ucomisd	%xmm1, %xmm0
+	jp	.L15
+	ucomisd	%xmm3, %xmm0
+	jne	.L15
+	subq	%rdx, %rax
+	ret
+	.cfi_endproc
+.LFE40:
+	.size	magnitude, .-magnitude
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC4:
+	.string	"Usage %s val\n"
+.LC5:
+	.string	"Order of %.2f = %ld\n"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB41:
+	.cfi_startproc
+	pushq	%rbx
+	.cfi_def_cfa_offset 16
+	.cfi_offset 3, -16
+	subq	$16, %rsp
+	.cfi_def_cfa_offset 32
+	cmpl	$2, %edi
+	je	.L17
+	movq	(%rsi), %rdx
+	movl	$.LC4, %esi
+	movl	$1, %edi
+	movl	$0, %eax
+	call	__printf_chk
+	jmp	.L18
+.L17:
+	movq	8(%rsi), %rdi
+	movl	$0, %esi
+	call	strtod
+	movsd	%xmm0, 8(%rsp)
+	movq	8(%rsp), %rbx
+	call	magnitude
+	movq	%rax, %rdx
+	movq	%rbx, 8(%rsp)
+	movsd	8(%rsp), %xmm0
+	movl	$.LC5, %esi
+	movl	$1, %edi
+	movl	$1, %eax
+	call	__printf_chk
+.L18:
+	movl	$0, %eax
+	addq	$16, %rsp
+	.cfi_def_cfa_offset 16
+	popq	%rbx
+	.cfi_def_cfa_offset 8
+	ret
+	.cfi_endproc
+.LFE41:
+	.size	main, .-main
+	.section	.rodata.cst8,"aM",@progbits,8
+	.align 8
+.LC2:
+	.long	0
+	.long	1072693248
+	.align 8
+.LC3:
+	.long	0
+	.long	1076101120
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

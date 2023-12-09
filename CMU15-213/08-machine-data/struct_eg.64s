@@ -1,0 +1,21 @@
+	.file	"struct_eg.c"
+	.text
+	.globl	get_j
+	.type	get_j, @function
+get_j:
+.LFB12:
+	.cfi_startproc
+	leaq	(%rdi,%rdi,2), %rax
+	movzwl	a+8(,%rax,4), %eax
+	ret
+	.cfi_endproc
+.LFE12:
+	.size	get_j, .-get_j
+	.comm	a,120,32
+	.comm	p5,8,8
+	.comm	p4,8,8
+	.comm	p3,8,8
+	.comm	p2,8,8
+	.comm	p1,8,8
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

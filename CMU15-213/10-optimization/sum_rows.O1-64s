@@ -1,0 +1,65 @@
+	.file	"sum_rows.c"
+	.text
+	.globl	sum_rows1
+	.type	sum_rows1, @function
+sum_rows1:
+.LFB0:
+	.cfi_startproc
+	testq	%rdx, %rdx
+	jle	.L1
+	leaq	0(,%rdx,8), %r9
+	movl	$0, %r8d
+	xorpd	%xmm1, %xmm1
+.L5:
+	movq	%r8, %rax
+	movsd	%xmm1, (%rsi,%r8,8)
+	leaq	(%r9,%rdi), %rcx
+.L4:
+	movsd	(%rsi,%rax,8), %xmm0
+	addsd	(%rdi), %xmm0
+	movsd	%xmm0, (%rsi,%rax,8)
+	addq	$8, %rdi
+	cmpq	%rcx, %rdi
+	jne	.L4
+	addq	$1, %r8
+	cmpq	%rdx, %r8
+	je	.L1
+	movq	%rcx, %rdi
+	jmp	.L5
+.L1:
+	rep; ret
+	.cfi_endproc
+.LFE0:
+	.size	sum_rows1, .-sum_rows1
+	.globl	sum_rows2
+	.type	sum_rows2, @function
+sum_rows2:
+.LFB1:
+	.cfi_startproc
+	testq	%rdx, %rdx
+	jle	.L6
+	leaq	0(,%rdx,8), %r8
+	movl	$0, %ecx
+	xorpd	%xmm1, %xmm1
+	jmp	.L8
+.L10:
+	addsd	(%rdi), %xmm0
+	addq	$8, %rdi
+	cmpq	%rax, %rdi
+	jne	.L10
+	movsd	%xmm0, (%rsi,%rcx,8)
+	addq	$1, %rcx
+	cmpq	%rdx, %rcx
+	je	.L6
+	movq	%rax, %rdi
+.L8:
+	leaq	(%r8,%rdi), %rax
+	movapd	%xmm1, %xmm0
+	jmp	.L10
+.L6:
+	rep; ret
+	.cfi_endproc
+.LFE1:
+	.size	sum_rows2, .-sum_rows2
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

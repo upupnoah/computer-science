@@ -1,0 +1,156 @@
+	.file	"loop.c"
+	.text
+	.globl	pcount_do
+	.type	pcount_do, @function
+pcount_do:
+.LFB12:
+	.cfi_startproc
+	movl	$0, %eax
+.L2:
+	movq	%rdi, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	shrq	%rdi
+	jne	.L2
+	rep; ret
+	.cfi_endproc
+.LFE12:
+	.size	pcount_do, .-pcount_do
+	.globl	pcount_goto
+	.type	pcount_goto, @function
+pcount_goto:
+.LFB13:
+	.cfi_startproc
+	movl	$0, %eax
+.L5:
+	movq	%rdi, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	shrq	%rdi
+	jne	.L5
+	rep; ret
+	.cfi_endproc
+.LFE13:
+	.size	pcount_goto, .-pcount_goto
+	.globl	pcount_while
+	.type	pcount_while, @function
+pcount_while:
+.LFB14:
+	.cfi_startproc
+	movl	$0, %eax
+	jmp	.L8
+.L9:
+	movq	%rdi, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	shrq	%rdi
+.L8:
+	testq	%rdi, %rdi
+	jne	.L9
+	rep; ret
+	.cfi_endproc
+.LFE14:
+	.size	pcount_while, .-pcount_while
+	.globl	pcount_goto_dw
+	.type	pcount_goto_dw, @function
+pcount_goto_dw:
+.LFB15:
+	.cfi_startproc
+	movl	$0, %eax
+	testq	%rdi, %rdi
+	je	.L11
+.L12:
+.L13:
+	movq	%rdi, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	shrq	%rdi
+	jne	.L13
+.L11:
+	rep; ret
+	.cfi_endproc
+.LFE15:
+	.size	pcount_goto_dw, .-pcount_goto_dw
+	.globl	pcount_goto_jtm
+	.type	pcount_goto_jtm, @function
+pcount_goto_jtm:
+.LFB16:
+	.cfi_startproc
+	movl	$0, %eax
+	jmp	.L17
+.L18:
+	movq	%rdi, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	shrq	%rdi
+.L17:
+	testq	%rdi, %rdi
+	jne	.L18
+	rep; ret
+	.cfi_endproc
+.LFE16:
+	.size	pcount_goto_jtm, .-pcount_goto_jtm
+	.globl	pcount_for
+	.type	pcount_for, @function
+pcount_for:
+.LFB17:
+	.cfi_startproc
+	movl	$0, %eax
+	movl	$0, %ecx
+	jmp	.L20
+.L21:
+	movq	%rdi, %rdx
+	shrq	%cl, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	addq	$1, %rcx
+.L20:
+	cmpq	$63, %rcx
+	jbe	.L21
+	rep; ret
+	.cfi_endproc
+.LFE17:
+	.size	pcount_for, .-pcount_for
+	.globl	pcount_for_goto_dw
+	.type	pcount_for_goto_dw, @function
+pcount_for_goto_dw:
+.LFB18:
+	.cfi_startproc
+	movl	$0, %eax
+	movl	$0, %ecx
+.L23:
+	movq	%rdi, %rdx
+	shrq	%cl, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	addq	$1, %rcx
+	cmpq	$63, %rcx
+	jbe	.L23
+	rep; ret
+.L24:
+	.cfi_endproc
+.LFE18:
+	.size	pcount_for_goto_dw, .-pcount_for_goto_dw
+	.globl	pcount_for_goto_jtm
+	.type	pcount_for_goto_jtm, @function
+pcount_for_goto_jtm:
+.LFB19:
+	.cfi_startproc
+	movl	$0, %eax
+	movl	$0, %ecx
+	jmp	.L27
+.L28:
+	movq	%rdi, %rdx
+	shrq	%cl, %rdx
+	andl	$1, %edx
+	addq	%rdx, %rax
+	addq	$1, %rcx
+.L27:
+	cmpq	$63, %rcx
+	jbe	.L28
+	rep; ret
+	.cfi_endproc
+.LFE19:
+	.size	pcount_for_goto_jtm, .-pcount_for_goto_jtm
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

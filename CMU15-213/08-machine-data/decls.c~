@@ -1,0 +1,14 @@
+
+
+typedef int a1_t[3][5];
+
+typedef int *a2_t[3][5];
+
+typedef (int *)a3_t[2][5];
+
+int main() {
+    printf("a1_t -> %d\n", sizeof(a1_t));
+    printf("a2_t -> %d\n", sizeof(a2_t));
+    printf("a3_t -> %d\n", sizeof(a3_t));
+    return 0;
+}

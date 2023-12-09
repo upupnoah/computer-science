@@ -1,0 +1,130 @@
+	.file	"bufdemo.c"
+	.text
+	.globl	gets
+	.type	gets, @function
+gets:
+.LFB34:
+	.cfi_startproc
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	pushq	%rbx
+	.cfi_def_cfa_offset 24
+	.cfi_offset 3, -24
+	subq	$8, %rsp
+	.cfi_def_cfa_offset 32
+	movq	%rdi, %rbp
+	movq	stdin(%rip), %rdi
+	call	_IO_getc
+	movq	%rbp, %rcx
+	jmp	.L2
+.L3:
+	leaq	1(%rcx), %rbx
+	movb	%al, (%rcx)
+	movq	stdin(%rip), %rdi
+	call	_IO_getc
+	movq	%rbx, %rcx
+.L2:
+	cmpl	$-1, %eax
+	setne	%r8b
+	cmpl	$10, %eax
+	setne	%sil
+	testb	%sil, %r8b
+	jne	.L3
+	movb	$0, (%rcx)
+	movq	%rbp, %rax
+	addq	$8, %rsp
+	.cfi_def_cfa_offset 24
+	popq	%rbx
+	.cfi_def_cfa_offset 16
+	popq	%rbp
+	.cfi_def_cfa_offset 8
+	ret
+	.cfi_endproc
+.LFE34:
+	.size	gets, .-gets
+	.globl	echo
+	.type	echo, @function
+echo:
+.LFB35:
+	.cfi_startproc
+	subq	$24, %rsp
+	.cfi_def_cfa_offset 32
+	movq	%fs:40, %rax
+	movq	%rax, 8(%rsp)
+	xorl	%eax, %eax
+	movq	%rsp, %rdi
+	call	gets
+	movq	%rsp, %rdi
+	call	puts
+	movq	8(%rsp), %rax
+	xorq	%fs:40, %rax
+	je	.L6
+	call	__stack_chk_fail
+.L6:
+	addq	$24, %rsp
+	.cfi_def_cfa_offset 8
+	.p2align 4,,2
+	ret
+	.cfi_endproc
+.LFE35:
+	.size	echo, .-echo
+	.globl	call_echo
+	.type	call_echo, @function
+call_echo:
+.LFB36:
+	.cfi_startproc
+	subq	$8, %rsp
+	.cfi_def_cfa_offset 16
+	movl	$0, %eax
+	call	echo
+	addq	$8, %rsp
+	.cfi_def_cfa_offset 8
+	ret
+	.cfi_endproc
+.LFE36:
+	.size	call_echo, .-call_echo
+	.section	.rodata.str1.1,"aMS",@progbits,1
+.LC0:
+	.string	"I've been smashed!"
+	.text
+	.globl	smash
+	.type	smash, @function
+smash:
+.LFB37:
+	.cfi_startproc
+	subq	$8, %rsp
+	.cfi_def_cfa_offset 16
+	movl	$.LC0, %edi
+	call	puts
+	movl	$0, %edi
+	call	exit
+	.cfi_endproc
+.LFE37:
+	.size	smash, .-smash
+	.section	.rodata.str1.1
+.LC1:
+	.string	"Type a string:"
+	.text
+	.globl	main
+	.type	main, @function
+main:
+.LFB38:
+	.cfi_startproc
+	subq	$8, %rsp
+	.cfi_def_cfa_offset 16
+	movl	$.LC1, %esi
+	movl	$1, %edi
+	movl	$0, %eax
+	call	__printf_chk
+	movl	$0, %eax
+	call	call_echo
+	movl	$0, %eax
+	addq	$8, %rsp
+	.cfi_def_cfa_offset 8
+	ret
+	.cfi_endproc
+.LFE38:
+	.size	main, .-main
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits

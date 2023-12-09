@@ -1,0 +1,25 @@
+	.file	"set_row.c"
+	.text
+	.globl	set_row
+	.type	set_row, @function
+set_row:
+.LFB0:
+	.cfi_startproc
+	testq	%rcx, %rcx
+	jle	.L1
+	imulq	%rcx, %rdx
+	leaq	(%rdi,%rdx,8), %rdx
+	movl	$0, %eax
+.L3:
+	movsd	(%rsi,%rax,8), %xmm0
+	movsd	%xmm0, (%rdx,%rax,8)
+	addq	$1, %rax
+	cmpq	%rcx, %rax
+	jne	.L3
+.L1:
+	rep; ret
+	.cfi_endproc
+.LFE0:
+	.size	set_row, .-set_row
+	.ident	"GCC: (Ubuntu 4.8.1-2ubuntu1~12.04) 4.8.1"
+	.section	.note.GNU-stack,"",@progbits
