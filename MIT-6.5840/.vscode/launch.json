@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "debugAdapter": "dlv-dap",
+            "name": "Launch",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/src/main/mrsequential.go",
+            "args": [
+                "wc.so",
+                "pg-grimm.txt"
+            ],
+            // go build -buildmode=plugin -gcflags="all=-N -l"  ../mrapps/wc.go
+        }
+    ]
+}

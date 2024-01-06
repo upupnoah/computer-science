@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 # Noah's file
-/.vscode
+# /.vscode
 /.idea
