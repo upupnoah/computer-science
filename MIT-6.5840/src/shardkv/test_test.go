@@ -1,15 +1,18 @@
 package shardkv
 
-import "6.5840/porcupine"
-import "6.5840/models"
-import "testing"
-import "strconv"
-import "time"
-import "fmt"
-import "sync/atomic"
-import "sync"
-import "math/rand"
-import "io/ioutil"
+import (
+	"fmt"
+	"math/rand"
+	"os"
+	"strconv"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"6.5840/models"
+	"6.5840/porcupine"
+)
 
 const linearizabilityCheckTimeout = 1 * time.Second
 
@@ -708,7 +711,7 @@ func TestUnreliable3(t *testing.T) {
 
 	res, info := porcupine.CheckOperationsVerbose(models.KvModel, operations, linearizabilityCheckTimeout)
 	if res == porcupine.Illegal {
-		file, err := ioutil.TempFile("", "*.html")
+		file, err := os.CreateTemp("", "*.html")
 		if err != nil {
 			fmt.Printf("info: failed to create temp file for visualization")
 		} else {

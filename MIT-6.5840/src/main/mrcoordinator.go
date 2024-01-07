@@ -20,8 +20,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	// cmd: go run mrcoordinator.go pg-*.txt
+	// os.Args["mrcoordinator", "pg-*.txt"]
 	m := mr.MakeCoordinator(os.Args[1:], 10)
-	for m.Done() == false {
+	for m.Done() == true {
 		time.Sleep(time.Second)
 	}
 

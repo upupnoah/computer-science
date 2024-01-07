@@ -1,16 +1,19 @@
 package kvraft
 
-import "6.5840/porcupine"
-import "6.5840/models"
-import "testing"
-import "strconv"
-import "time"
-import "math/rand"
-import "strings"
-import "sync"
-import "sync/atomic"
-import "fmt"
-import "io/ioutil"
+import (
+	"fmt"
+	"math/rand"
+	"os"
+	"strconv"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"testing"
+	"time"
+
+	"6.5840/models"
+	"6.5840/porcupine"
+)
 
 // The tester generously allows solutions to complete elections in one second
 // (much more than the paper's range of timeouts).
@@ -368,7 +371,7 @@ func GenericTest(t *testing.T, part string, nclients int, nservers int, unreliab
 
 	res, info := porcupine.CheckOperationsVerbose(models.KvModel, opLog.Read(), linearizabilityCheckTimeout)
 	if res == porcupine.Illegal {
-		file, err := ioutil.TempFile("", "*.html")
+		file, err := os.CreateTemp("", "*.html")
 		if err != nil {
 			fmt.Printf("info: failed to create temp file for visualization")
 		} else {

@@ -12,7 +12,10 @@
                 "wc.so",
                 "pg-grimm.txt"
             ],
+            "buildFlags": "-race"
+            // 编译 wc.go 的时候需要与 mrsequential.go 一样的编译参数
             // go build -buildmode=plugin -gcflags="all=-N -l"  ../mrapps/wc.go
+            // go build  -race -buildmode=plugin -gcflags="all=-N -l"  ../mrapps/wc.go
         }
     ]
 }
