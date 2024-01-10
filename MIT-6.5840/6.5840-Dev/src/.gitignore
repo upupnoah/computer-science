@@ -7,7 +7,7 @@ mapreduce/x.txt
 pbservice/x.txt
 kvpaxos/x.txt
 *.so
-main/mrcoordinator/
-main/mrsequential/
-main/mrworker/
+# main/mrcoordinator/
+# main/mrsequential/
+# main/mrworker/
 
